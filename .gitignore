@@ -23,7 +23,7 @@
 
 # Ignore application configuration
 /config/application.yml
-.keep
+
 tmp/*
 test/*
 .DS_Store
@@ -41,11 +41,13 @@ capybara-*.html
 **.orig
 rerun.txt
 pickle-email-*.html
-
+config/deploy.rb
+config/deploy/production.rb
+config/deploy/staging.rb
 # TODO Comment out these rules if you are OK with secrets being uploaded to the repo
 config/initializers/secret_token.rb
 config/secrets.yml
-
+Capfile
 # dotenv
 # TODO Comment out this rule if environment variables can be committed
 .env
