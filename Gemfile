@@ -51,6 +51,12 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+gem 'capistrano'
+gem 'capistrano-rails'#, '1.1.3'
+gem 'capistrano-rvm'
+gem 'capistrano-bundler'#, '1.1.4'
+gem 'capistrano3-puma'
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-turbolinks'
