@@ -1,0 +1,10 @@
+= semantic_form_for @section do |f|
+  = f.input :name
+  = f.input :colour
+  = f.submit 'Save'
+  
+  
+= content_for :jquery do
+  :plain
+    $('#section_colour').spectrum({
+    preferredFormat: "hex"});

@@ -1,0 +1,5 @@
+= book.status.name
+- if book.status_id == 1
+  = link_to 'Mark as missing', missing_book_path(book), class: [:button, :alert], remote: true
+- elsif book.status_id == 3
+  = link_to 'Mark as found', found_book_path(book), class: [:button], remote: true

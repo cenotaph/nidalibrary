@@ -1,0 +1,8 @@
+- @sections.each do |section|
+  %h2
+    = link_to section.name, section_books_path(section), style: "color: #{section.colour}"
+    - if user_signed_in?
+      = link_to 'edit', edit_section_path(section), class: [:button, :tiny]
+      = link_to 'Shelf read!', shelfread_section_path(section), class: [:button, :tiny, :secondary]
+  = pluralize(section.books.size, 'book')
+  %br/

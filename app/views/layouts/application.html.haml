@@ -1,0 +1,50 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    -#= display_meta_tags site: 'Nida Library'
+    = stylesheet_link_tag   "application" 
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    %div{:'data-sticky-container' => ''}
+      .top-bar{:'data-sticky' => '', style: 'width: 100%'}
+        .top-bar-title
+          %strong NAC Library
+        .top-bar-left
+          %ul.menu.dropdown{:'data-dropdown-menu' => ''}
+            %li= link_to 'Books', books_path
+            %li
+              = link_to 'Sections', sections_path
+              %ul.menu.vertical
+                - @sections.each do |section|
+                  %li= link_to section.name, section_books_path(section)
+        - if user_signed_in?
+          .top-bar-left
+            %ul.menu.dropdown{:"data-dropdown-menu" => ''}
+              %li
+                = link_to 'Admin', '#'
+                %ul.menu.vertical
+                  %li= link_to 'Add new book', new_book_path
+                  - @statuses.each do |status|
+                    %li= link_to "See all #{status.name.downcase}", status_books_path(status)
+                  %li= link_to 'Log out', destroy_user_session_path, :method => :delete
+        .top-bar-right
+          = form_tag '/search', method: :post do 
+            %ul.menu
+            
+              %li= text_field_tag :searchterm, params[:searchterm]
+              %li= submit_tag 'Search!', class: [:button, :small]
+    - if flash
+      - flash.each do |key, value|
+        .alert.text-center{ :class => "alert-#{key}" }
+          %strong= raw value
+    %section.main_container
+      .row
+        
+      = yield 
+    -#%footer= render partial: 'layouts/footer'
+  :javascript
+    $(document).ready(function() { #{yield :jquery} });              

@@ -1,0 +1,39 @@
+%h1
+  - if @section
+    Shelf read for
+    %em= @section.name
+    section
+
+%table
+  %thead
+    %tr
+      %th Cat#
+      %th.image
+      %th Details
+      %th Publisher
+      %th Status
+      %th
+      %th
+
+  %tbody
+    - @books.each do |book|
+      %tr
+        %td{style: "background-color: #{book.section.try(:colour)}"}
+          = book.section.try(:name)
+          %br/
+          = book.catno
+        %td.image
+          - if book.image?
+            = image_tag book.image.url(:small)
+        %td
+          = book.title
+          %br/
+          .subtitle= book.subtitle
+          %br/
+          %em= book.author
+
+        %td= book.publisher
+        %td[book]= render partial: 'togglecell', locals: {book: book}
+        %td
+          = link_to 'Details', book, class: [:button, :tiny]
+          = link_to 'Edit', edit_book_path(book), class: [:button, :tiny]

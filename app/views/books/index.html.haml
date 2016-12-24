@@ -1,0 +1,62 @@
+%h1
+  - if @section
+    = @section.name
+    %br/
+    %small
+      = link_to 'Browse sections', sections_path, class: [:button, :tiny, :secondary]
+      = link_to 'All books', '/', class: [:button, :tiny, :secondary]
+  - elsif @status
+    = "All #{@status.name.downcase} books"
+  - else
+    All books
+
+= paginate @books
+%table
+  %thead
+    %tr
+      %th Cat#
+      %th.image
+      %th Title
+      %th Author
+      %th Details
+      %th Publisher
+      %th
+
+
+  %tbody
+    - @books.each do |book|
+      %tr
+        %td{style: "background-color: #{book.section.try(:colour)}"}
+          = book.section.try(:name)
+          %br/
+          = book.catno
+        %td.image
+          - if book.image?
+            = image_tag book.image.url(:small)
+        %td
+          = book.title
+          %br/
+          .subtitle= book.subtitle
+        %td= truncate_html(book.author, length: 90)
+        %td
+          - unless book.isbn10.blank?
+            .isbn= book.isbn10
+          - unless book.isbn13.blank?
+            .isbn= book.isbn13
+          - unless book.language.blank?
+            .languages
+              = book.language.split(/\//).map{|x| I18nData.languages[x.upcase]}.join(' / ') rescue book.language
+          .year
+            = book.year_published.to_s
+          .pages
+            - unless book.pages.blank?
+              = book.pages.to_s
+              pages
+        %td= book.publisher
+        %td= link_to 'Details', book, class: [:button]
+        -#%td= link_to 'Edit', edit_book_path(book)
+        -#%td= link_to 'Destroy', book, :method => :delete, :data => { :confirm => 'Are you sure?' }
+= paginate @books
+%br
+- if user_signed_in?
+  = link_to 'New Book', new_book_path

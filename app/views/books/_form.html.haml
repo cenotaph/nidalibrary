@@ -1,0 +1,60 @@
+= semantic_form_for @book, html: {multipart: true} do |f|
+  - if @book.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@book.errors.count, "error")} prohibited this book from being saved:"
+      %ul
+        - @book.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+
+    = f.input :isbn10
+  .field
+
+    = f.input :isbn13
+  .field
+
+    = f.input :title
+  .field
+ 
+    = f.input :language
+  .field
+ 
+    = f.input :publisher
+  .field
+
+    = f.input :pages
+  .field
+
+    = f.input :year_published
+  .field
+
+    = f.input :author
+  .field
+
+    = f.input :subtitle
+  .field
+ 
+    = f.input :comment
+  .field
+
+    = f.input :summary
+  .field
+    = f.input :section, collection: Section.order(:name), include_blank: false
+  .field
+
+    = f.input :catno
+  .field
+
+    = f.input :provenance
+  .field
+
+    - if f.object.image?
+      = image_tag f.object.image.url(:small)
+      = f.input :image, label: 'Change image'
+    - else 
+      = f.input :image, label: 'Upload image'
+  .field
+    = f.input :status, collection: Status.all
+  .actions
+    = f.submit 'Save', class: [:button]

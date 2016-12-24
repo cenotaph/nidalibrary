@@ -1,0 +1,47 @@
+.row.expanded
+  .small-12.columns
+    %h1= @book.title
+    %h2= @book.author
+.row.expanded
+  .small-12.medium-6.columns
+    - if @book.image?
+      = image_tag @book.image.url
+  .small-12.columns.medium-6
+    %p#notice= notice
+
+    %p
+      %b ISBN:
+      = [@book.isbn10, @book.isbn13].compact.join(' / ')
+
+    %p
+      %b Language:
+      = @book.language.split(/\//).map{|x| I18nData.languages[x.upcase]}.join(' / ') rescue book.language
+    %p
+      %b Publisher:
+      = @book.publisher
+    %p
+      %b Pages:
+      = @book.pages
+    %p
+      %b Year published:
+      = @book.year_published
+    %p
+      %b Comment:
+      = @book.comment
+    %p{style: "background-color: #{@book.section.colour rescue 'white'}; padding: 1em;"}
+      %b Catno:
+      - unless @book.section.blank?
+        = link_to @book.section.name, section_books_path(@book.section)
+        = ": "
+      = @book.catno
+    %p
+      %b Provenance:
+      = @book.provenance
+
+- if user_signed_in?
+  = link_to 'Edit', edit_book_path(@book)
+  \|
+  = link_to 'Destroy', @book, method: :delete, data: {confirm: 'Are you sure?'}
+  \|
+= link_to 'Back', books_path
+

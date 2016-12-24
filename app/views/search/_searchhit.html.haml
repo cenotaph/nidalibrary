@@ -1,0 +1,20 @@
+.row.expanded
+  .float-left.column.small-4
+    - if hit.image?
+      = image_tag hit.image.url(:small)
+    - else
+      &nbsp;
+  .float-left.column.small-8
+    = hit.title
+
+    %br/
+    = hit.author
+    %br/
+    - unless hit.section.nil?
+      .section{style: "background-color: #{hit.section.colour}; padding: 1rem;"}
+        = link_to hit.section.name, section_books_path(hit.section)
+        = hit.catno
+    %br/
+    = link_to 'Details', hit, class: [:button, :tiny, :secondary]
+    %br/
+    %br/
