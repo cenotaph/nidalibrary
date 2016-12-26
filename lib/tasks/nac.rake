@@ -85,8 +85,8 @@ namespace :nac do
   end
   
   task get_duplicates: :environment do
-    Book.where(section: nil).each do |book|
-      splits = book.catno.split(/\s/)
+    Book.all.each do |book|
+      splits = book.catno.split(/\s*\,\s*/)
       if splits.size > 1
         book.catno = splits[0]
         book.save
@@ -98,6 +98,7 @@ namespace :nac do
       end
     end
   end
+  
   task get_amazon_images: :environment do
   
     Book.where(image: nil).each do |book|

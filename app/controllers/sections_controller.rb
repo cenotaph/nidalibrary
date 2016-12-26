@@ -26,7 +26,7 @@ class SectionsController < ApplicationController
   
   def shelfread
     @section = Section.friendly.find(params[:id])
-    @books = @section.books
+    @books = @section.books.order(:catno)
   end
 
   # PATCH/PUT /sections/1
