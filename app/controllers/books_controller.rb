@@ -11,7 +11,17 @@ class BooksController < ApplicationController
     elsif params[:status_id]
       @status = Status.friendly.find(params[:status_id])
       @books = @status.books.page(params[:page]).per(50)
+    elsif params[:format] == 'csv'
+      require 'csv'
+      @books = Book.all.order(:catno)
+      respond_to do |format|
+        format.csv do
+          headers['Content-Disposition'] = "attachment; filename=\"book-list\""
+          headers['Content-Type'] ||= 'text/csv'
+        end
+      end
     else
+
       @books = Book.page(params[:page]).per(50)
     end
   end

@@ -1,1 +1,1 @@
-$("td#book_<%= @book.id.to_s %>").html("<%= escape_javascript(render partial: 'sections/togglecell', locals: {book: @book}) %>");
+$("#book_<%= @book.id.to_s %>").html("<%= escape_javascript(render partial: 'sections/togglecell', locals: {book: @book}) %>");

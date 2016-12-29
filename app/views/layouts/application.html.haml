@@ -30,6 +30,7 @@
                   %li= link_to 'Add new book', new_book_path
                   - @statuses.each do |status|
                     %li= link_to "See all #{status.name.downcase}", status_books_path(status)
+                  %li= link_to 'Export all to CSV', '/books.csv'
                   %li= link_to 'Log out', destroy_user_session_path, :method => :delete
         .top-bar-right
           = form_tag '/search', method: :post do 

@@ -1,0 +1,5 @@
+<%- headers = ['Catalog #', 'Title', 'Author', 'Publisher', 'Pages', 'Year', 'ISBN10', 'ISBN13', 'Language', 'Comment', 'Provenance', 'Summary', 'Subtitle', 'Status'] -%>
+<%= CSV.generate_line headers %>
+<%- @books.each do |book| -%>
+<%= CSV.generate_line([book.catno, book.title, book.author, book.publisher, book.pages, book.year_published, book.isbn10, book.isbn13, book.language, book.comment, book.provenance, book.summary]) -%>
+<%- end -%>

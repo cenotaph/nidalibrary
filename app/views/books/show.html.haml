@@ -15,7 +15,7 @@
 
     %p
       %b Language:
-      = @book.language.split(/\//).map{|x| I18nData.languages[x.upcase]}.join(' / ') rescue book.language
+      = @book.language.split(/\//).map{|x| I18nData.languages[x.upcase]}.join(' / ') rescue @book.language
     %p
       %b Publisher:
       = @book.publisher
@@ -25,9 +25,11 @@
     %p
       %b Year published:
       = @book.year_published
-    %p
-      %b Comment:
-      = @book.comment
+    - if user_signed_in?
+      %p
+        %b Comment:
+        = @book.comment
+      %p[@book]= render partial: 'sections/togglecell', locals: {book: @book}
     %p{style: "background-color: #{@book.section.colour rescue 'white'}; padding: 1em;"}
       %b Catno:
       - unless @book.section.blank?
