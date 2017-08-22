@@ -10,6 +10,10 @@ class SectionsController < ApplicationController
     @sections = Section.all
   end
   
+  def new
+    @section = Section.new
+  end
+  
   def create
     @section = Section.new(section_params)
 
