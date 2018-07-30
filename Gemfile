@@ -71,7 +71,7 @@ gem 'kaminari'
 gem 'minidusen'
 gem 'mini_magick'
 gem 'formtastic'
-gem 'foundation-rails'#, "6.3.0.0"
+gem 'foundation-rails', "6.3.0.0"
 gem 'foundation-datetimepicker-rails', '0.2.4'
 gem 'i18n_data'
 gem 'truncate_html'
