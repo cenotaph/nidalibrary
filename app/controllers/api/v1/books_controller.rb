@@ -20,10 +20,10 @@ module Api::V1
       params[:page] ||= 1
       if params[:section_id]
         @section = Section.friendly.find(params[:section_id])
-        @books = @section.books.page(params[:page]).per(50)
+        @books = @section.books.order(:catno).page(params[:page]).per(50)
       elsif params[:status_id]
         @status = Status.friendly.find(params[:status_id])
-        @books = @status.books.page(params[:page]).per(50)
+        @books = @status.books.order(:section_id, :catno).page(params[:page]).per(50)
       elsif params[:format] == 'csv'
         require 'csv'
         @books = Book.all.order(:catno)
