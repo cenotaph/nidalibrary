@@ -986,10 +986,10 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
-    capistrano3-puma (3.1.1)
+    capistrano3-puma (4.0.0)
       capistrano (~> 3.7)
       capistrano-bundler
-      puma (~> 3.4)
+      puma (~> 4.0)
     carrierwave (2.0.2)
       activemodel (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -1089,7 +1089,8 @@ GEM
     parser (2.6.5.0)
       ast (~> 2.4.0)
     public_suffix (4.0.1)
-    puma (3.12.2)
+    puma (4.3.1)
+      nio4r (~> 2.0)
     rack (2.0.8)
     rack-cors (1.1.0)
       rack (>= 2.0.0)
@@ -1224,7 +1225,7 @@ DEPENDENCIES
   mini_magick
   minidusen
   mysql2 (>= 0.4.4)
-  puma (~> 3.12.2)
+  puma (~> 4.3.1)
   rack-cors
   rails (= 6.0.1)
   rails-controller-testing
