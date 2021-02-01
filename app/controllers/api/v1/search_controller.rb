@@ -7,6 +7,15 @@ module Api::V1
     # skip_load_and_authorize_resource only: %i[create destroy index]
     respond_to :json
   
+    def classify
+      conn = Faraday.new(url: 'http://classify.oclc.org/classify2',
+        headers: {'Content-Type' => 'application/json'})
+      resp =  conn.get('Classify') do |req|
+        req.params['isbn'] = params[:isbn]
+      end
+      render xml: resp.body.gsub(/\n/, ''), status: resp.status
+    end
+    
     def search
       params[:page] ||= 1
       if params[:searchterm]
@@ -19,7 +28,7 @@ module Api::V1
           next: params[:page].to_i < @hits.total_pages ? v1_search_path(searchterm: params[:searchterm], page: params[:page].to_i  + 1) : nil, 
           prev: params[:page].to_i  == 1 ? nil : v1_search_path(searchterm: params[:searchterm], page:  params[:page].to_i  - 1)
         }
-        render json: BookSerializer.new(@hits, options).serialized_json, status: 200
+        render json: BookSerializer.new(@hits, options).serializable_hash.to_json, status: 200
       else
         redirect_to '/'
       end

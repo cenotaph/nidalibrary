@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SectionSerializer
-  include FastJsonapi::ObjectSerializer
+  include JSONAPI::Serializer
   attributes :id, :name, :colour
   attribute :book_count do |object|
     object.books.count

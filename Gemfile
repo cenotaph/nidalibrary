@@ -52,10 +52,14 @@ gem 'aws-sdk', '~> 3'
 gem 'carrierwave'
 gem 'carrierwave-aws', github: 'sorentwo/carrierwave-aws', branch: :master
 gem 'carrierwave-base64'
+gem 'counter_culture', '~> 2.0'
+
 gem 'devise_token_auth', github: 'lynndylanhurley/devise_token_auth', branch: :master
-gem 'fast_jsonapi'
+
+gem 'faraday'
 gem 'figaro'
 gem 'friendly_id', '~> 5.1.0'
+gem 'jsonapi-serializer'
 gem 'kaminari'
 gem 'minidusen'
 gem 'mini_magick'

@@ -10,7 +10,7 @@ module Api::V1
     def create
       @book = Book.new(book_params)
       if @book.save
-        render json: BookSerializer.new(@book).serialized_json, status: :created
+        render json: BookSerializer.new(@book).serializable_hash.to_json, status: :created
       else
         respond_with_errors(@book) 
       end
@@ -21,12 +21,15 @@ module Api::V1
       if params[:section_id]
         @section = Section.friendly.find(params[:section_id])
         @books = @section.books.order(:catno).page(params[:page]).per(50)
+      elsif params[:fast_id]
+        @section = Fast.find(params[:fast_id])
+        @books = @section.books.page(params[:page]).per(50)
       elsif params[:status_id]
         @status = Status.friendly.find(params[:status_id])
         @books = @status.books.order(:section_id, :catno).page(params[:page]).per(50)
       elsif params[:format] == 'csv'
         require 'csv'
-        @books = Book.all.order(:catno)
+        @books = Book.all.order("id desc, updated_at, catno")
         respond_to do |format|
           format.csv do
             headers['Content-Disposition'] = "attachment; filename=\"book-list\""
@@ -35,7 +38,7 @@ module Api::V1
         end
       else
 
-        @books = Book.page(params[:page]).per(50)
+        @books = Book.order("id desc, updated_at, catno").page(params[:page]).per(50)
       end
       options = {}
       options[:meta] = { total: @books.total_pages }
@@ -44,18 +47,18 @@ module Api::V1
         next: params[:page].to_i < @books.total_pages ? (params[:section_id] ? v1_section_books_path(@section.slug, page: params[:page].to_i  + 1) : v1_books_path(page: params[:page].to_i  + 1)) : nil, 
         prev: params[:page].to_i  == 1 ? nil : (params[:section_id] ? v1_section_books_path(@section.slug, page: params[:page].to_i  - 1) : v1_books_path(page:  params[:page].to_i  - 1))
       }
-      render json: BookSerializer.new(@books, options).serialized_json, status: 200
+      render json: BookSerializer.new(@books, options).serializable_hash.to_json, status: 200
     end
 
     def show
       @book = Book.find(params[:id])
-      render json: BookSerializer.new(@book).serialized_json, status: 200
+      render json: BookSerializer.new(@book).serializable_hash.to_json, status: 200
     end
 
     def update
       @book = Book.find(params[:id])
       if @book.update(book_params)
-        render json: BookSerializer.new(@book).serialized_json, status: 200
+        render json: BookSerializer.new(@book).serializable_hash.to_json, status: 200
       else
         respond_with_errors(@book)
       end
@@ -64,7 +67,7 @@ module Api::V1
     private
 
     def book_params
-      params.require(:book).permit(:isbn10, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug)
+      params.require(:book).permit(:isbn10, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :author_is_editor,:author_is_institution, :contributors)
     end
   end
 end

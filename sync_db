@@ -1,0 +1,6 @@
+#!/bin/bash
+
+scp fail@bloodteam.com:~/nidalibrary.sql .
+mysql -u root -e "drop database nida"
+mysql -u root -e "create database nida"
+mysql -u root nida < nidalibrary.sql
