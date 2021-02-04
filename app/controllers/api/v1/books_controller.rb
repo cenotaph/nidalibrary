@@ -16,6 +16,16 @@ module Api::V1
       end
     end
 
+    def destroy
+      @book = Book.find(params[:id])
+      if @book.destroy
+        head :no_content
+      else
+        respond_with_errors(@book) 
+      end
+      
+    end
+    
     def index
       params[:page] ||= 1
       if params[:section_id]

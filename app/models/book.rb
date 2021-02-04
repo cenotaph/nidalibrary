@@ -1,7 +1,7 @@
 class Book < ApplicationRecord
   belongs_to :section, optional: true
   belongs_to :status
-  has_many :books_fasts
+  has_many :books_fasts, dependent: :destroy
   has_many :fasts, through: :books_fasts
   
   validates :call_number, uniqueness: true, allow_blank: true
