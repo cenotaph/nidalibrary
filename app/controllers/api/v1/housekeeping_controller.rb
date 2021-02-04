@@ -7,7 +7,7 @@ module Api::V1
     before_action :authenticate_user!, only: [:clean_commas]
 
     def check_callnos
-      @books = Book.includes(:fasts).where("call_number is not null").order(:call_number)
+      @books = Book.preload(:status :fasts).where("call_number is not null").order(:call_number)
       render json: BookSerializer.new(@books).serializable_hash.to_json, status: :ok
     end
 

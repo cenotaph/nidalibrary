@@ -46,8 +46,11 @@ class Book < ApplicationRecord
         base = ddc.to_s.gsub(/\.0$/, '') + ' ' + sort_title.gsub(/\s/, '').gsub(/\W/, '')[0].upcase + sort_title.gsub(/\s/, '').gsub(/\W/, '')[1].downcase
       else
         base = ddc.to_s.gsub(/\.0$/, '') + ' ' + Cutter.cut(name_to_cut)
-
-        others_in_class = Book.where(ddc: ddc).where("id <> ?", id).where('author is not null')
+        if new_record?
+          others_in_class = Book.where(ddc: ddc).where('author is not null')
+        else
+          others_in_class = Book.where(ddc: ddc).where("id <> ?", id).where('author is not null')
+        end
         cut = Cutter.cut(name_to_cut)
         if others_in_class.map{|x| Cutter.cut(x.name_to_cut) }.include?(cut)
           base = base + ' ' + sort_title.gsub(/\s/, '').gsub(/\W/, '')[0].upcase + sort_title.gsub(/\s/, '').gsub(/\W/, '')[1].downcase
