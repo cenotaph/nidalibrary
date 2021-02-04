@@ -50,6 +50,22 @@ module Api::V1
       render json: BookSerializer.new(@books, options).serializable_hash.to_json, status: 200
     end
 
+    def search_oclc
+      if params[:search] =~ /^978/ 
+        # search by isbn
+        @book = Book.search_isbn(params[:search])
+        if @book
+          @book.isbn13 = params[:search].gsub(/\D/, '')
+          Rails.logger.error @book.inspect
+          render json: BookSerializer.new(@book).serializable_hash.to_json, status: 200
+        else
+          render json: {}, status: 404
+        end
+      end
+
+    end
+    
+
     def show
       @book = Book.find(params[:id])
       render json: BookSerializer.new(@book).serializable_hash.to_json, status: 200
@@ -67,7 +83,7 @@ module Api::V1
     private
 
     def book_params
-      params.require(:book).permit(:isbn10, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :author_is_editor,:author_is_institution, :contributors)
+      params.require(:book).permit(:isbn10, :oclc, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :ddc, :call_number, :lcc, :copies, :author_is_editor,:author_is_institution, :contributors)
     end
   end
 end

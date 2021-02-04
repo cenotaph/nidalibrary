@@ -71,7 +71,7 @@ module Api::V1
     end
     
     def unclassified
-      @books = Book.where(ddc: nil).order(created_at: :desc).page(params[:page]).per(150)
+      @books = Book.where(ddc: nil).order(:section_id, :catno, updated_at: :desc)
       render json: BookSerializer.new(@books).serializable_hash.to_json, status: :ok
     end
   end

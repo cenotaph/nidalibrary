@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   scope module: 'api' do
     namespace :v1 do
       resources :books do
+        collection do
+          get :search_oclc
+        end
         member do
           get :missing
           get :found
