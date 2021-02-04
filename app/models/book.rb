@@ -23,33 +23,47 @@ class Book < ApplicationRecord
       self.call_number = self.suggested_call_number
     end
   end
+
+  def name_to_cut
+    if !artist.blank?
+      return artist
+    elsif author_is_institution && publisher != author
+      return publisher
+    else
+      return author
+    end    
+  end
   
   def self.clean_partnerships(term)
     term.split(/(\s*\/\s*)|(\s*\&\s)|(,\s*)|(\s+and\s+)|(\s+ir\s+)/).delete_if{|x| x =~ /^(\s*\/\s*)|(\s*\&\s*)|(,\s*)|(\s+and\s+)|(\s+ir\s+)$/ }.map{|x| x.split.last + ', ' + x.split.first(x.split.size - 1).join(' ') }.join('; ')
   end
 
   def suggested_call_number
-    if author.blank? #|| author =~ /editor/i || author =~ /ed\./
-      base = ddc.to_s.gsub(/\.0$/, '') + ' ' + sort_title.gsub(/\s/, '').gsub(/\W/, '')[0].upcase + sort_title.gsub(/\s/, '').gsub(/\W/, '')[1].downcase
+    if ddc.blank?
+      return nil
     else
-      base = ddc.to_s.gsub(/\.0$/, '') + ' ' + Cutter.cut(author)
-      others_in_class = Book.where(ddc: ddc).where("id <> ?", id).where('author is not null')
-      cut = Cutter.cut(author)
-      if others_in_class.map{|x| Cutter.cut(x.author) }.include?(cut)
-        base = base + ' ' + sort_title.gsub(/\s/, '').gsub(/\W/, '')[0].upcase + sort_title.gsub(/\s/, '').gsub(/\W/, '')[1].downcase
-        i = 2
-        loop do
-          if sort_title.gsub(/\s/, '').gsub(/\W/, '')[i].nil?
-            base = base + i.to_s
-          else
-            base = base + sort_title.gsub(/\s/, '').gsub(/\W/, '')[i].downcase
+      if name_to_cut.blank? 
+        base = ddc.to_s.gsub(/\.0$/, '') + ' ' + sort_title.gsub(/\s/, '').gsub(/\W/, '')[0].upcase + sort_title.gsub(/\s/, '').gsub(/\W/, '')[1].downcase
+      else
+        base = ddc.to_s.gsub(/\.0$/, '') + ' ' + Cutter.cut(name_to_cut)
+        others_in_class = Book.where(ddc: ddc).where("id <> ?", id).where('author is not null')
+        cut = Cutter.cut(name_to_cut)
+        if others_in_class.map{|x| Cutter.cut(x.name_to_cut) }.include?(cut)
+          base = base + ' ' + sort_title.gsub(/\s/, '').gsub(/\W/, '')[0].upcase + sort_title.gsub(/\s/, '').gsub(/\W/, '')[1].downcase
+          i = 2
+          loop do
+            if sort_title.gsub(/\s/, '').gsub(/\W/, '')[i].nil?
+              base = base + i.to_s
+            else
+              base = base + sort_title.gsub(/\s/, '').gsub(/\W/, '')[i].downcase
+            end
+            break base unless Book.unscoped.exists?(["id <> ? AND call_number = ?", id, base])
+            i = i + 1
           end
-          break base unless Book.unscoped.exists?(["id <> ? AND call_number = ?", id, base])
-          i = i + 1
         end
       end
+      return base
     end
-    return base
 
   end
   

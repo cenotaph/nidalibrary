@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_26_155407) do
+ActiveRecord::Schema.define(version: 2021_02_04_130355) do
 
   create_table "books", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "isbn10"
@@ -44,9 +44,10 @@ ActiveRecord::Schema.define(version: 2021_01_26_155407) do
     t.boolean "not_found", default: false, null: false
     t.string "call_number"
     t.integer "copies", default: 1, null: false
-    t.string "contributors"
+    t.string "contributors", limit: 1024
     t.boolean "author_is_editor", default: false, null: false
     t.boolean "author_is_institution", default: false, null: false
+    t.string "artist"
     t.index ["section_id"], name: "index_books_on_section_id"
     t.index ["status_id"], name: "index_books_on_status_id"
   end

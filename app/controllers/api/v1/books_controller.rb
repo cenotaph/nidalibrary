@@ -83,7 +83,7 @@ module Api::V1
     private
 
     def book_params
-      params.require(:book).permit(:isbn10, :oclc, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :ddc, :call_number, :lcc, :copies, :author_is_editor,:author_is_institution, :contributors)
+      params.require(:book).permit(:isbn10, :oclc, :artist, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :ddc, :call_number, :lcc, :copies, :author_is_editor,:author_is_institution, :contributors)
     end
   end
 end
