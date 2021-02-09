@@ -4,7 +4,7 @@ class Book < ApplicationRecord
   has_many :books_fasts, dependent: :destroy
   has_many :fasts, through: :books_fasts
   
-  validates :call_number, uniqueness: true, allow_blank: true
+  # validates :call_number,  allow_blank: true
   validates_presence_of :title #, :catno
 
   before_validation :update_call_number

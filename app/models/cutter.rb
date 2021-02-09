@@ -7,6 +7,10 @@ class Cutter < ApplicationRecord
       return ""
     else
       s = s.gsub(/ü/, 'u')
+      s = s.gsub(/š/, 's')
+      s = s.gsub(/Š/, 'S')
+      s = s.gsub(/ž/, 'z')
+      s = s.gsub(/Ž/, 'z')
       s = s.gsub(/ė/, 'e')
       s = s.gsub(/ę/, 'e')
       s = I18n.transliterate(s.gsub(/[^a-zA-Z,\.]/i,'').downcase)
