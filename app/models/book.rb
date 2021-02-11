@@ -73,7 +73,7 @@ class Book < ApplicationRecord
               # puts 'oics: ' + oics.inspect
               puts 'this oic: ' + oic.id.to_s + '; cn: ' + oic.call_number + '.' + (oics.index(oic) + 1).to_s
               start = oics.index(oic) + 1
-              new_call_number = oic.ddc.to_s.gsub(/\.0$/, '') + Cutter.cut(oic.name_to_cut) + ' ' + oic.year_published.to_s + '.' + start.to_s
+              new_call_number = oic.ddc.to_s.gsub(/\.0$/, '') + ' ' + Cutter.cut(oic.name_to_cut) + ' ' + oic.year_published.to_s + '.' + start.to_s
               
               if Book.unscoped.exists?(["id <> ? AND call_number = ?", id, new_call_number])
                 loop do
