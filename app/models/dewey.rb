@@ -2,6 +2,40 @@ class Dewey < ApplicationRecord
   validates :code, presence: true, uniqueness: true
   validates :name, presence: true
 
+
+  def parent
+     stripz = code.to_s.gsub(/0*$/, '')
+     if stripz.gsub(/\.$/, '') =~ /\./
+      places = code.to_s.split(/\./).last.size
+     else
+      places = 0
+     end
+     if places == 0
+      
+      if sprintf("%03d", code)[2] == '0'
+        if sprintf("%03d", code)[1] == '0'
+          return nil
+        else
+          return (sprintf("%03d", code)[0] + "00").to_f
+        end
+      else
+
+        return (sprintf("%03d", code)[0..1] + "0").to_f
+      end
+     else
+
+      return stripz[0...-1].to_f
+     end
+  end
+  
+  def name_with_ancestry(trail = '')
+    if parent == code || parent.nil?
+      return trail.gsub(/>>\s$/, '').strip
+    else
+      return Dewey.find_by(code: parent).name_with_ancestry(name + " >> " + trail)
+    end
+  end
+  
   def self.tree_limit(num)
     precision = [10, 1, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.0000001, 0.00000001, 0.000000001, 0.0000000001]
     if num.to_i.to_s == num.to_s

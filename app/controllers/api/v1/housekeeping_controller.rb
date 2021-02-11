@@ -21,6 +21,11 @@ module Api::V1
       end
     end
 
+    def dewey_entries
+      @ds = Dewey.where(["code in (?)", Book.pluck(:ddc).compact.sort])
+      render json: DeweySerializer.new(@ds).serializable_hash.to_json, status: :created
+    end
+    
     def old_order
       @books = Book.preload(:fasts).where("ddc is not null").order(:section_id, :catno)
       render json: BookSerializer.new(@books).serializable_hash.to_json, status: :ok

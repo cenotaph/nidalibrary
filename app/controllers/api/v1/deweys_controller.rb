@@ -4,7 +4,12 @@ module Api::V1
   # device types controller. admins only?
   class DeweysController < ApiController
     before_action :authenticate_user! , except: %i[show books index]
-
+    
+    def all_books
+      @books = Book.where("ddc is not null").order(:call_number).group_by(&:ddc)
+      render json: {books: @books }.to_json, status: :ok
+    end
+    
     def books
       # get all subcodes, first figure out precision
       upper_limit = Dewey.tree_limit(params[:code])

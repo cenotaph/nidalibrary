@@ -29,8 +29,10 @@ Rails.application.routes.draw do
           get :shelfread
         end
       end
+      get '/housekeeping/all_books', to: 'deweys#all_books'
       post '/deweys/books', to: 'deweys#books'
       get '/housekeeping/dewey_sweep', to: 'housekeeping#dewey_sweep'
+      get '/housekeeping/dewey_entries', to: 'housekeeping#dewey_entries'
        get '/housekeeping/old_order', to: 'housekeeping#old_order'
       get '/housekeeping/:id/clean_commas', to: 'housekeeping#clean_commas'
       get '/housekeeping/probably_healthy_authors', to: 'housekeeping#probably_healthy_authors'

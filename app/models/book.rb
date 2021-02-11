@@ -4,7 +4,7 @@ class Book < ApplicationRecord
   has_many :books_fasts, dependent: :destroy
   has_many :fasts, through: :books_fasts
   
-  # validates :call_number,  allow_blank: true
+  validates_uniqueness_of :call_number , allow_nil: true
   validates_presence_of :title #, :catno
 
   before_validation :update_call_number
@@ -24,6 +24,10 @@ class Book < ApplicationRecord
     end
   end
 
+  def generate_new_call_number
+    self.call_number = self.suggested_call_number
+  end
+
   def name_to_cut
     if !artist.blank?
       return artist
@@ -39,6 +43,87 @@ class Book < ApplicationRecord
   end
 
   def suggested_call_number
+    if ddc.blank?
+      return nil
+    else
+      if name_to_cut.blank? 
+        base = ddc.to_s.gsub(/\.0$/, '') + ' ' + sort_title.gsub(/\s/, '').gsub(/\W/, '')[0].upcase + sort_title.gsub(/\s/, '').gsub(/\W/, '')[1].downcase + ' ' + year_published.to_s
+      else
+        cut = Cutter.cut(name_to_cut)
+        base = ddc.to_s.gsub(/\.0$/, '') + ' ' + cut # + ' ' + year_published.to_s
+        
+        if Book.unscoped.exists?(["id <> ? AND (call_number = ? OR call_number LIKE ?)", id, base, base + ' '  + year_published.to_s + '%'])
+          oics = Book.where(["id <> ? AND (call_number = ? OR call_number LIKE ?)", id, base, base + ' '  + year_published.to_s + '%'])
+          oics.each do |oic|
+            if oics.where(["id <> ?", oic.id]).map(&:year_published).include?(oic.year_published)
+              start = oics.sort_by(&:year_published).index(oic) + 1
+              cn = oic.ddc.to_s.gsub(/\.0$/, '') + ' ' + Cutter.cut(oic.name_to_cut) + ' ' + oic.year_published.to_s + '.' + start.to_s
+              if Book.unscoped.exists?(["id <> ? AND call_number = ?", id, cn])
+                loop do
+                  start = start + 1
+                  cn.gsub!(/\.\d$/, '.' + start.to_s)
+                  break cn unless  Book.unscoped.exists?(["id <> ? AND call_number = ?", id, cn])
+                end
+              end
+              oic.call_number = cn
+              oic.save!
+            else
+              # only one other by this year so add a #
+              
+              # puts 'oics: ' + oics.inspect
+              puts 'this oic: ' + oic.id.to_s + '; cn: ' + oic.call_number + '.' + (oics.index(oic) + 1).to_s
+              start = oics.index(oic) + 1
+              new_call_number = oic.ddc.to_s.gsub(/\.0$/, '') + ' ' + oic.year_published.to_s + '.' + start.to_s
+              
+              if Book.unscoped.exists?(["id <> ? AND call_number = ?", id, new_call_number])
+                loop do
+                  start = start + 1
+                  new_call_number.gsub!(/\.\d$/, '.' + start.to_s)
+                  break new_call_number unless  Book.unscoped.exists?(["id <> ? AND call_number = ?", id, new_call_number])
+                end
+              else
+                puts 'self: ' + self.inspect
+                puts 'oic: ' + oic.id.to_s
+                puts new_call_number
+                
+              end
+              oic.call_number = new_call_number
+              
+              # oic.call_number = oic.call_number + ' ' + oic.year_published.to_s
+              oic.save!
+              puts ' changed oic ' + oic.id.to_s + ' to '  + oic.call_number
+            end
+          end
+          base = base + ' '  + year_published.to_s 
+        end
+        # changed others to have year
+        if Book.unscoped.exists?(["id <> ? AND call_number = ?", id, base])
+          i = 2
+          base = base + "."
+          loop do
+            base = base + i.to_s
+            break base unless  Book.unscoped.exists?(["id <> ? AND call_number = ?", id, base])
+            i = i + 1
+          end
+        end
+              # sames = others_in_class.reject{|x| x.name_to_cut != name_to_cut }
+      end
+      if base =~ /\./
+        if base.split(/\./)[0].length == 2
+          return "0" + base
+        elsif base.split(/\./)[0].length == 1
+          return "00" + base
+        else
+          return base
+        end
+      else
+        return base
+      end
+    end
+
+  end
+  
+  def suggested_call_number_old
     if ddc.blank?
       return nil
     else
