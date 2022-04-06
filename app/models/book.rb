@@ -1,5 +1,6 @@
 class Book < ApplicationRecord
   belongs_to :section, optional: true
+  belongs_to :collection, optional: true
   belongs_to :status
   has_many :books_fasts, dependent: :destroy
   has_many :fasts, through: :books_fasts

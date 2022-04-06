@@ -13,6 +13,10 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :collections do
+        resources :books
+      end
+      
       resources :deweys do
 
       end

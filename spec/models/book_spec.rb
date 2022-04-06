@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Book, type: :model do
   context 'validations' do
     it { is_expected.to validate_presence_of(:title) }
-    it { is_expected.to validate_presence_of(:catno) }
+
   end
 
   it 'has a valid factory' do
@@ -13,11 +13,11 @@ RSpec.describe Book, type: :model do
     expect(u.save).to be true
   end
 
-   it 'is invalid without a title' do
+  it 'is invalid without a title' do
     expect(FactoryBot.build(:book, title: nil).save).to be false
   end
 
-   it 'is invalid without a title' do
+  xit 'is invalid without a title' do
     expect(FactoryBot.build(:book, catno: nil).save).to be false
   end
 

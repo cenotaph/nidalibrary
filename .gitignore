@@ -73,3 +73,9 @@ bower.json
 # Ignore Byebug command history file.
 .byebug_history
 public/uploads/*
+fixedmissing.sql
+isbns.txt
+*.sql
+missing
+*.sql
+nidalibrary.sql

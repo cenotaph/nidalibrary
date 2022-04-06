@@ -28,7 +28,10 @@ module Api::V1
     
     def index
       params[:page] ||= 1
-      if params[:section_id]
+      if params[:collection_id]
+        @collection = Collection.friendly.find(params[:collection_id])
+        @books = @collection.books.order(:call_number).page(params[:page]).per(50)
+      elsif params[:section_id]
         @section = Section.friendly.find(params[:section_id])
         @books = @section.books.order(:catno).page(params[:page]).per(50)
       elsif params[:fast_id]
@@ -93,7 +96,7 @@ module Api::V1
     private
 
     def book_params
-      params.require(:book).permit(:isbn10, :oclc, :artist, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :ddc, :call_number, :lcc, :copies, :author_is_editor,:author_is_institution, :contributors)
+      params.require(:book).permit(:isbn10, :oclc, :artist, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :ddc, :call_number, :lcc, :copies, :author_is_editor,:author_is_institution, :contributors, :collection_id)
     end
   end
 end

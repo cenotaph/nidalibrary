@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_04_130355) do
+ActiveRecord::Schema.define(version: 2022_04_06_084543) do
 
   create_table "books", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "isbn10"
@@ -48,30 +48,41 @@ ActiveRecord::Schema.define(version: 2021_02_04_130355) do
     t.boolean "author_is_editor", default: false, null: false
     t.boolean "author_is_institution", default: false, null: false
     t.string "artist"
+    t.bigint "collection_id"
+    t.index ["collection_id"], name: "index_books_on_collection_id"
     t.index ["section_id"], name: "index_books_on_section_id"
     t.index ["status_id"], name: "index_books_on_status_id"
   end
 
-  create_table "books_fasts", charset: "utf8mb4", force: :cascade do |t|
+  create_table "books_fasts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "book_id", null: false
     t.bigint "fast_id", null: false
   end
 
-  create_table "cutters", charset: "utf8mb4", force: :cascade do |t|
+  create_table "collections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.boolean "active", default: true, null: false
+    t.decimal "number", precision: 10
+    t.string "slug"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "cutters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "num"
     t.string "str"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "deweys", charset: "utf8mb4", force: :cascade do |t|
+  create_table "deweys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.decimal "code", precision: 12, scale: 8
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "fasts", charset: "utf8mb4", force: :cascade do |t|
+  create_table "fasts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "code"
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -124,4 +135,5 @@ ActiveRecord::Schema.define(version: 2021_02_04_130355) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "books", "collections"
 end
