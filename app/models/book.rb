@@ -7,7 +7,7 @@ class Book < ApplicationRecord
   
   validates_uniqueness_of :call_number , allow_nil: true
   validates_presence_of :title #, :catno
-
+  attr_accessor :reset_callno
   before_validation :update_call_number
   
   def sort_title
@@ -20,7 +20,7 @@ class Book < ApplicationRecord
   before_save :update_image_attributes
   
   def update_call_number
-    if changed.include?("ddc") && (call_number.blank? || call_number == 'null')
+    if reset_callno || (changed.include?("ddc") && (call_number.blank? || call_number == 'null'))
       self.call_number = self.suggested_call_number
     end
   end

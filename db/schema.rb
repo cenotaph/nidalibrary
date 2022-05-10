@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_06_084543) do
+ActiveRecord::Schema.define(version: 2022_04_07_074626) do
 
   create_table "books", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "isbn10"
@@ -135,5 +135,4 @@ ActiveRecord::Schema.define(version: 2022_04_06_084543) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "books", "collections"
 end

@@ -15,6 +15,19 @@ module Api::V1
       end
     end
 
+    def destroy
+      @collection = Collection.friendly.find(params[:id])
+      if @collection.books.empty?
+        if @collection.destroy
+          head :no_content
+        else
+          respond_with_errors(@collection)
+        end
+      else
+        render json: { errors: [{ title: 'You cannot delete a collection that has books in it.', status: 422 }] }, status: :unprocessable_entity
+      end
+    end
+
     def index
       render json: CollectionSerializer.new(Collection.all.order(:number)).serializable_hash.to_json, status: 200
     end

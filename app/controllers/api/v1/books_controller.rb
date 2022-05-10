@@ -96,7 +96,7 @@ module Api::V1
     private
 
     def book_params
-      params.require(:book).permit(:isbn10, :oclc, :artist, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :ddc, :call_number, :lcc, :copies, :author_is_editor,:author_is_institution, :contributors, :collection_id)
+      params.require(:book).permit(:isbn10, :reset_callno, :oclc, :artist, :isbn13, :image, :title, :language, :section_id, :status_id, :publisher, :summary, :pages, :year_published, :author, :subtitle, :comment, :catno, :provenance, :slug, :ddc, :call_number, :lcc, :copies, :author_is_editor,:author_is_institution, :contributors, :collection_id)
     end
   end
 end
