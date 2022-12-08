@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_07_074626) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_12_06_205216) do
   create_table "books", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "isbn10"
     t.string "isbn13"
@@ -26,8 +25,8 @@ ActiveRecord::Schema.define(version: 2022_04_07_074626) do
     t.string "catno"
     t.string "provenance"
     t.string "slug", limit: 512
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "section_id"
     t.string "image"
     t.string "image_content_type"
@@ -64,29 +63,29 @@ ActiveRecord::Schema.define(version: 2022_04_07_074626) do
     t.boolean "active", default: true, null: false
     t.decimal "number", precision: 10
     t.string "slug"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "cutters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "num"
     t.string "str"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "deweys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.decimal "code", precision: 12, scale: 8
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "fasts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "code"
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "books_count", default: 0, null: false
   end
 
@@ -94,6 +93,29 @@ ActiveRecord::Schema.define(version: 2022_04_07_074626) do
     t.string "name"
     t.string "colour", limit: 7
     t.string "slug"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "serials", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.string "volume"
+    t.string "number"
+    t.string "issn"
+    t.integer "year"
+    t.string "month"
+    t.string "language"
+    t.string "subtitle"
+    t.string "publisher"
+    t.string "provenance"
+    t.text "comment"
+    t.string "image"
+    t.string "image_content_type"
+    t.integer "image_size"
+    t.integer "image_width"
+    t.integer "image_height"
+    t.integer "status_id"
+    t.integer "copies"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -102,27 +124,27 @@ ActiveRecord::Schema.define(version: 2022_04_07_074626) do
     t.string "name"
     t.string "colour", limit: 7
     t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "users", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.boolean "allow_password_change", default: false

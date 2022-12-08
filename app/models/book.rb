@@ -406,8 +406,6 @@ class Book < ApplicationRecord
   
   private
   
-
-  
   def update_image_attributes
     if image.present? && image_changed?
       if image.file.exists?

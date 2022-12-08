@@ -1,0 +1,31 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn servemy
+
+PATH: 
+  /Users/fail/.rvm/gems/ruby-3.1.2/bin:/Users/fail/.rvm/gems/ruby-3.1.2@global/bin:/Users/fail/.rvm/rubies/ruby-3.1.2/bin:/Users/fail/.rvm/bin:/usr/local/opt/openssl@3/bin:/usr/local/opt/openssl@1.0.2t/bin:/usr/local/opt/mongodb-community@3.4/bin:/usr/local/opt/mongodb-community@3.4/bin:/Users/fail/.cargo/bin:/Users/fail/bin:HOME/.yarn/bin:/Users/fail/.config/yarn/global/node_modules/.bin:/usr/local/opt/inetutils/libexec/gnubin:/Users/fail/.cargo/bin:/Users/fail/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Library/Apple/usr/bin:/Users/fail/src/flutter/bin
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  16.16.0
+
+Platform: 
+  darwin x64
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Couldn't find a package.json file in "/Users/fail/src/nida/api"
+      at new MessageError (/usr/local/lib/node_modules/yarn/lib/cli.js:186:110)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:40048:15
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:98:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:109:13
