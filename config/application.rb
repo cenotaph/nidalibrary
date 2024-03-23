@@ -22,7 +22,7 @@ Bundler.require(*Rails.groups)
 module Nidaapi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults(7.1)
     config.autoload_paths += %w(#{config.root}/app/filters)
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -32,18 +32,19 @@ module Nidaapi
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
-    config.session_store :cookie_store, key: '_interslice_session'
-    config.middleware.use ActionDispatch::Cookies
-    config.middleware.use config.session_store, config.session_options
+    config.session_store(:cookie_store, key: '_interslice_session')
+    config.middleware.use(ActionDispatch::Cookies)
+    config.middleware.use(config.session_store, config.session_options)
     config.api_only = true
-    config.middleware.insert_before 0, Rack::Cors do
+    config.hosts << 'api.nidalibrary.lt'
+    config.middleware.insert_before(0, Rack::Cors) do
       allow do
         origins "*"
         resource "*",
-          headers: :any,
-          methods: %i[get post options delete put],
-          expose: ['access-token', 'expiry', 'token-type', 'uid', 'client']
+                 headers: :any,
+                 methods: %i[get post options delete put],
+                 expose: %w[access-token expiry token-type uid client]
       end
-    end  
+    end
   end
 end
