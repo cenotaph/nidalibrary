@@ -36,7 +36,8 @@ module Nidaapi
     config.middleware.use(ActionDispatch::Cookies)
     config.middleware.use(config.session_store, config.session_options)
     config.api_only = true
-    config.hosts << 'api.nidalibrary.lt'
+    config.hosts << 'api.library.nidacolony.lt'
+    config.hosts << 'api.testing.icewhistle.com'
     config.middleware.insert_before(0, Rack::Cors) do
       allow do
         origins "*"
